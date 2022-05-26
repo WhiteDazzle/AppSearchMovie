@@ -1,0 +1,21 @@
+.movie-list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    height: 100%;
+    position: relative;
+}
+
+.spin,
+.movies-list__title {
+    margin: 250px auto 250px auto;
+}
+
+.movie-list__pagination {
+    margin-top: 40px;
+    margin-bottom: 20px;
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+}

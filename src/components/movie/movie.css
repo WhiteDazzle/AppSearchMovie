@@ -1,0 +1,40 @@
+.movie__data {
+    padding-right: 20px;
+}
+
+.movie {
+    display: flex;
+    height: 281px;
+    width: 454px;
+    margin-top: 35px;
+    box-shadow: 5px 5px 5px lightgrey;
+}
+
+.movie__poster {
+    min-width: 183px;
+    margin-right: 20px;
+}
+
+.movie__release-date {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 22px;
+    color: #827E7E;
+}
+
+.movie__description {
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -ms-line-clamp: 6;
+    -webkit-line-clamp: 6;
+    line-clamp: 6;
+    display: -webkit-box;
+    display: box;
+    word-wrap: break-word;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+}
+
+
