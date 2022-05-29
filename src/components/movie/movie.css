@@ -1,5 +1,7 @@
 .movie__data {
     padding-right: 20px;
+    padding-top: 10px;
+    position: relative;
 }
 
 .movie {
@@ -27,9 +29,9 @@
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
     overflow: hidden;
-    -ms-line-clamp: 6;
-    -webkit-line-clamp: 6;
-    line-clamp: 6;
+    -ms-line-clamp: 3;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
     display: -webkit-box;
     display: box;
     word-wrap: break-word;
@@ -37,4 +39,31 @@
     box-orient: vertical;
 }
 
+.movie__overall-rating {
+    position: absolute;
+    top:12px;
+    right: 9px;
+    height: 30px;
+    width: 30px;
+    padding-top: 2px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 50%;
+}
 
+.movie__title {
+    width: 200px;
+    font-size: 20px;
+}
+
+.rateStar {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    width: 239px;
+    height: 46px;
+}
+
+.rateStar li {
+    width: 15px;
+}

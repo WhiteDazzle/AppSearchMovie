@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { Pagination } from 'antd';
 import type { PaginationProps } from 'antd';
 
-const ListPagination: React.FC = (props) => {
-  const [current, setCurrent] = useState(3);
+interface Props {
+  getPageChange: (page: number) => void;
+}
 
+const ListPagination: React.FC<Props> = (props) => {
+  const [current, setCurrent] = useState(1);
   const onChange: PaginationProps['onChange'] = (page) => {
     props.getPageChange(page);
     setCurrent(page);

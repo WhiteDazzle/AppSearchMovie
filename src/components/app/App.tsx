@@ -1,27 +1,28 @@
 import React, { Component } from 'react';
-import { debounce } from 'lodash';
+import { Tabs } from 'antd';
 
 import './App.css';
 import MovieList from '../movies-list';
-import SearchMovie from '../movie-search';
+import MovieListRated from '../movie-list-rated';
+
+const { TabPane } = Tabs;
+
+const onChange = (key: string) => {
+  console.log(key);
+};
 
 export default class App extends Component {
-  state = { searchMovieName: '' };
-
-  getSearchChange = (e: any) => {
-    this.setState(() => {
-      return { searchMovieName: e.target.value };
-    });
-    console.log(e.target.value);
-  };
-
-  searchValue = debounce(this.getSearchChange, 1000);
-
   render = () => {
     return (
       <div className="app">
-        <SearchMovie getSearchChange={this.searchValue} />
-        <MovieList searchValue={this.state.searchMovieName} />
+        <Tabs defaultActiveKey="1" onChange={onChange} centered>
+          <TabPane tab="Search" key="Search">
+            <MovieList />
+          </TabPane>
+          <TabPane tab="Rated" key="Rated">
+            <MovieListRated />
+          </TabPane>
+        </Tabs>
       </div>
     );
   };
