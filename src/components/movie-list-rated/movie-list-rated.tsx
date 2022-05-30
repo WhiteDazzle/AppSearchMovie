@@ -49,6 +49,12 @@ export default class MovieListRated extends Component<Props> {
   render = () => {
     const movieListRatedArr = [...this.state.personRated];
     const movieListRated = movieListRatedArr.map(this.renderMovie);
-    return <div className="movie-list-rated">{movieListRated}</div>;
+    const noRated =
+      movieListRatedArr.length === 0 ? <h1 className="movies-list-rated__title">You haven't rated any movies</h1> : null;
+    return (
+      <div className="movie-list-rated">
+        {noRated} {movieListRated}
+      </div>
+    );
   };
 }
