@@ -7,20 +7,25 @@ import MovieListRated from '../movie-list-rated';
 
 const { TabPane } = Tabs;
 
-const onChange = (key: string) => {
-  console.log(key);
-};
-
 export default class App extends Component {
+  state = { ratedMovieCounter: 0 };
+
+  onPersonRateCounter = () => {
+    this.setState(() => {
+      const ratedMovieCounter = this.state.ratedMovieCounter + 1;
+      return { ratedMovieCounter: ratedMovieCounter };
+    });
+  };
+
   render = () => {
     return (
       <div className="app">
-        <Tabs defaultActiveKey="1" onChange={onChange} centered>
+        <Tabs defaultActiveKey="1" centered>
           <TabPane tab="Search" key="Search">
-            <MovieList />
+            <MovieList onPersonRateCounter={this.onPersonRateCounter} />
           </TabPane>
           <TabPane tab="Rated" key="Rated">
-            <MovieListRated />
+            <MovieListRated ratedMovieCounter={this.state.ratedMovieCounter} />
           </TabPane>
         </Tabs>
       </div>

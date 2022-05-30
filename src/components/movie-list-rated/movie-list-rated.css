@@ -1,5 +1,6 @@
 .movie-list-rated {
-    margin-top: 60px;
+    padding-top: 60px;
+    padding-bottom: 20px;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;

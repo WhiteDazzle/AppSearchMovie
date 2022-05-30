@@ -10,7 +10,11 @@ import Service from '../../servises/servise';
 import ServiceLocalStorage from '../../servises/servises-local-storage';
 import SearchMovie from '../movie-search';
 
-export default class MovieList extends Component {
+interface Props {
+  onPersonRateCounter: () => void;
+}
+
+export default class MovieList extends Component<Props> {
   state = { movieList: [], loading: false, error: false, page: 1, firstLoading: true, searchValue: '' };
 
   getResource = new Service();
@@ -19,7 +23,7 @@ export default class MovieList extends Component {
 
   componentDidUpdate(prevProps: {}, prevState: { page: number; searchValue: string }) {
     if (this.state.searchValue !== prevState.searchValue || this.state.page !== prevState.page) {
-      this.doMovieList(this.state.searchValue, this.state.page);
+      this.renderMovieList(this.state.searchValue, this.state.page);
     }
   }
 
@@ -30,26 +34,27 @@ export default class MovieList extends Component {
   };
 
   onPersonRate = (rate: number, id: number): void => {
-    if (!this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies'))
-      this.ServiceLocalStorage.setLocalStorageMovie('selectedMovies', []);
     const idx: number = this.state.movieList.findIndex((el: { id: number }) => el.id === id);
     const selectedMovie: object = this.state.movieList[idx];
     const selectedMovieArr: object[] = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
+    // if (selectedMovieArr.findIndex((item:any) => item.id === id) < 0) return;
     selectedMovieArr.push({ ...selectedMovie, personRate: rate });
     this.ServiceLocalStorage.setLocalStorageMovie('selectedMovies', selectedMovieArr);
-    console.log(this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies'));
+    this.props.onPersonRateCounter();
   };
 
   getSearchChange = (e: any) => {
     this.setState(() => {
       return { searchValue: e.target.value };
     });
-    console.log(e.target.value);
   };
 
   searchValue = debounce(this.getSearchChange, 1000);
 
-  doMovie = (elem: any): any => {
+  renderMovie = (elem: any): any => {
+    const localStorageMovie: any = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
+    const movieIndexLocalStorage = localStorageMovie.findIndex((item: any) => elem.id === item.id);
+    const personRate = movieIndexLocalStorage > -1 ? localStorageMovie[movieIndexLocalStorage].personRate : 0;
     return (
       <Movie
         key={elem.id}
@@ -60,11 +65,12 @@ export default class MovieList extends Component {
         posterLink={elem.poster_path}
         voteAverage={elem.vote_average}
         onPersonRate={this.onPersonRate}
+        personRate={personRate}
       />
     );
   };
 
-  async doMovieList(searchValue: string, pageNumber: number = 1) {
+  async renderMovieList(searchValue: string, pageNumber: number = 1) {
     if (!searchValue) return;
 
     this.setState(() => {
@@ -92,6 +98,8 @@ export default class MovieList extends Component {
   }
 
   render = () => {
+    if (!this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies'))
+      this.ServiceLocalStorage.setLocalStorageMovie('selectedMovies', []);
     const noResultSearch =
       this.state.movieList.length === 0 && !this.state.loading ? (
         this.state.firstLoading ? (
@@ -111,7 +119,7 @@ export default class MovieList extends Component {
 
     const loadingSpin = this.state.loading && !this.state.error ? <Spin className="spin" size="large" /> : null;
     const errAlert = this.state.error ? <Alert message="проблемка" type="error" /> : null;
-    const movieList = !this.state.loading ? [...this.state.movieList].map(this.doMovie) : null;
+    const movieList = !this.state.loading ? [...this.state.movieList].map(this.renderMovie) : null;
     return (
       <div className="movie-list">
         <SearchMovie getSearchChange={this.searchValue} />

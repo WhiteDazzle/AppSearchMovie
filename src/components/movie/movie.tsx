@@ -11,6 +11,7 @@ interface Props {
   voteAverage: number;
   id: number;
   onPersonRate: (rate: number, id: number) => void;
+  personRate: number;
 }
 
 export default class Movie extends Component<Props> {
@@ -46,7 +47,7 @@ export default class Movie extends Component<Props> {
           <p className="movie__release-date">{this.props.releaseDate}</p>
           <p className="movie__genres"> Card content </p>
           <p className="movie__description">{this.props.description}</p>
-          <Rate className="rateStar" defaultValue={0} count={10} onChange={this.onPersonRate} />
+          <Rate className="rateStar" defaultValue={this.props.personRate} count={10} onChange={this.onPersonRate} />
         </div>
       </div>
     );
