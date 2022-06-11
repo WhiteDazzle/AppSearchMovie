@@ -10,3 +10,11 @@
     padding-right: 36px;
     background-color: white;
 }
+
+@media (max-width: 1010px) {
+    .app {
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

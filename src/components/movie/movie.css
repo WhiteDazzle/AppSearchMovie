@@ -1,7 +1,12 @@
 .movie__data {
     padding-right: 20px;
-    padding-top: 10px;
+    padding-top: 12px;
+    padding-bottom: 10px;
+    width: 271px;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .movie {
@@ -13,11 +18,12 @@
 }
 
 .movie__poster {
-    min-width: 183px;
+    width: 183px;
     margin-right: 20px;
 }
 
 .movie__release-date {
+    height: 22px;
     font-style: normal;
     font-weight: 400;
     font-size: 12px;
@@ -26,14 +32,15 @@
 }
 
 .movie__description {
+    margin-top: 10px;
+    height: 66px;
+    flex-grow:1;
     -ms-text-overflow: ellipsis;
     text-overflow: ellipsis;
     overflow: hidden;
-    -ms-line-clamp: 3;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
     display: -webkit-box;
-    display: box;
     word-wrap: break-word;
     -webkit-box-orient: vertical;
     box-orient: vertical;
@@ -42,7 +49,7 @@
 .movie__overall-rating {
     position: absolute;
     top:12px;
-    right: 9px;
+    right: 15px;
     height: 30px;
     width: 30px;
     padding-top: 2px;
@@ -52,18 +59,103 @@
 }
 
 .movie__title {
+    height: 30px;
+    margin-bottom:4px;
     width: 200px;
     font-size: 20px;
+    -ms-text-overflow: clip;
+    text-overflow: clip;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    display: -webkit-box;
+    word-wrap: break-word;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+}
+
+.movie__title--3-string:hover {
+    overflow: visible;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    z-index: 10;
+    box-shadow: 0 45px 0 17px #FFFFFF;
+    background-color: #FFFFFF;
+}
+
+.movie__title--2-string:hover {
+    overflow: visible;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    z-index: 10;
+    box-shadow: 0 25px 0 15px #FFFFFF;
+    background-color: #FFFFFF;
 }
 
 .rateStar {
-    position: absolute;
-    bottom: 2px;
-    left: 0;
+    margin-bottom: 10px;
     width: 239px;
     height: 46px;
 }
 
 .rateStar li {
     width: 15px;
+}
+
+.movie__genres {
+    line-height: 28px;
+    height: 28px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.movie__genre {
+    margin-right: 6px;
+    padding-left: 4px;
+    padding-right: 4px;
+    Size:12px;
+    background: #FAFAFA;
+    border: 1px solid #D9D9D9;
+    border-radius: 2px;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-line-clamp: 1;
+    line-clamp: 1;
+    word-wrap: break-word;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+}
+
+@media (max-width: 500px) {
+    .movie {
+        position: relative;
+        width: 100%;
+        height: 245px;
+    }
+
+    .movie__poster {
+        position: absolute;
+        top: 6px;
+        left:10px;
+        width: 60px;
+        height: 91px;
+    }
+    .movie__data {
+        margin-left: 84px;
+        padding-top: 4px;
+        padding-right: 8px;
+        padding-bottom: 0;
+        width: 100%;
+    }
+    .movie__title {
+        width: 85%;
+    }
+    .movie__description {
+        margin-left: -71px;
+    }
+    .rateStar {
+        align-self: flex-end;
+    }
+
 }

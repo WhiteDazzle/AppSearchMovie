@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { Pagination } from 'antd';
 import type { PaginationProps } from 'antd';
 
+import './pagination.css';
+
 interface Props {
   getPageChange: (page: number) => void;
+  numberSearchPages: number;
 }
 
 const ListPagination: React.FC<Props> = (props) => {
@@ -13,7 +16,9 @@ const ListPagination: React.FC<Props> = (props) => {
     setCurrent(page);
   };
 
-  return <Pagination size="small" current={current} onChange={onChange} total={50} />;
+  return (
+    <Pagination size="small" current={current} onChange={onChange} total={10 * props.numberSearchPages} pageSize={10} />
+  );
 };
 
 export default ListPagination;

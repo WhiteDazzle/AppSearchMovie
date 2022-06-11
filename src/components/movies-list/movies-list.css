@@ -8,8 +8,14 @@
 }
 
 .spin,
-.movies-list__title {
+.movies-list__title,
+.error-alert{
     margin: 250px auto 250px auto;
+}
+
+.ant-alert-message {
+    font-size: 2em;
+    font-weight: 500;
 }
 
 .movie-list__pagination {
@@ -18,4 +24,10 @@
     display: flex;
     width: 100%;
     justify-content: space-evenly;
+}
+
+@media (max-width: 940px) {
+    .movie-list {
+        justify-content: center;
+    }
 }
