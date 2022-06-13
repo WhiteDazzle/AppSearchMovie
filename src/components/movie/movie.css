@@ -1,7 +1,6 @@
 .movie__data {
     padding-right: 20px;
     padding-top: 12px;
-    padding-bottom: 10px;
     width: 271px;
     position: relative;
     display: flex;
@@ -33,17 +32,8 @@
 
 .movie__description {
     margin-top: 10px;
-    height: 66px;
-    flex-grow:1;
-    -ms-text-overflow: ellipsis;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    -webkit-line-clamp: 4;
-    line-clamp: 4;
-    display: -webkit-box;
-    word-wrap: break-word;
-    -webkit-box-orient: vertical;
-    box-orient: vertical;
+    margin-bottom: 0;
+    height: 115px;
 }
 
 .movie__overall-rating {
@@ -61,17 +51,19 @@
 .movie__title {
     height: 30px;
     margin-bottom:4px;
-    width: 200px;
+    width: 225px;
     font-size: 20px;
-    -ms-text-overflow: clip;
-    text-overflow: clip;
     overflow: hidden;
-    -webkit-line-clamp: 1;
     line-clamp: 1;
     display: -webkit-box;
-    word-wrap: break-word;
+    word-wrap: normal;
     -webkit-box-orient: vertical;
-    box-orient: vertical;
+    cursor: pointer;
+}
+
+.movie__title--3-string,
+.movie__title--2-string {
+    width: 200px;
 }
 
 .movie__title--3-string:hover {
@@ -79,7 +71,7 @@
     -webkit-line-clamp: 3;
     line-clamp: 3;
     z-index: 10;
-    box-shadow: 0 45px 0 17px #FFFFFF;
+    box-shadow: -4px 48px 0 15px #FFFFFF;
     background-color: #FFFFFF;
 }
 
@@ -88,12 +80,11 @@
     -webkit-line-clamp: 2;
     line-clamp: 2;
     z-index: 10;
-    box-shadow: 0 25px 0 15px #FFFFFF;
+    box-shadow: -4px 25px 0 15px #FFFFFF;
     background-color: #FFFFFF;
 }
 
 .rateStar {
-    margin-bottom: 10px;
     width: 239px;
     height: 46px;
 }
@@ -117,14 +108,12 @@
     background: #FAFAFA;
     border: 1px solid #D9D9D9;
     border-radius: 2px;
-    -ms-text-overflow: ellipsis;
-    text-overflow: ellipsis;
     overflow: hidden;
     -webkit-line-clamp: 1;
     line-clamp: 1;
-    word-wrap: break-word;
+    word-wrap: normal;
     -webkit-box-orient: vertical;
-    box-orient: vertical;
+    cursor: pointer;
 }
 
 @media (max-width: 500px) {
@@ -148,14 +137,22 @@
         padding-bottom: 0;
         width: 100%;
     }
-    .movie__title {
-        width: 85%;
-    }
     .movie__description {
         margin-left: -71px;
+        height: 98px;
+        -webkit-line-clamp: 4;
+        line-clamp: 4;
     }
     .rateStar {
         align-self: flex-end;
+    }
+
+    .movie__title--3-string:hover {
+        box-shadow: 10px 45px 0 17px #FFFFFF;
+    }
+
+    .movie__title--2-string:hover {
+        box-shadow: 10px 25px 0 10px #FFFFFF;
     }
 
 }

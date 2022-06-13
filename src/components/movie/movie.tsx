@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Rate } from 'antd';
 
 import './movie.css';
-
+import Genre from '../../Data-types/genre';
 interface Props {
   title: string;
   releaseDate: string;
@@ -15,11 +15,6 @@ interface Props {
   getMovieGenres: Array<Genre>;
 }
 
-interface Genre {
-  id: number;
-  name: string;
-}
-
 export default class Movie extends Component<Props> {
   voteAverageColor = (voteAverage: number): {} => {
     if (voteAverage >= 7) return { border: '2px solid #66E900' };
@@ -29,9 +24,16 @@ export default class Movie extends Component<Props> {
   };
 
   titleClassName = (title: string): string => {
-    if (title.length >= 35) return 'movie__title movie__title--3-string';
-    if (title.length >= 22) return 'movie__title movie__title--2-string';
+    if (title.length >= 38) return 'movie__title movie__title--3-string';
+    if (title.length >= 24) return 'movie__title movie__title--2-string';
     return 'movie__title';
+  };
+
+  descriptionSlice = (description: string): string => {
+    if (description.length < 170) return description;
+    const shortDescription = description.slice(0, 170);
+    const lastSpace = shortDescription.lastIndexOf(' ');
+    return shortDescription.slice(0, lastSpace) + '...';
   };
 
   onPersonalRating = (rate: number): void => {
@@ -53,7 +55,7 @@ export default class Movie extends Component<Props> {
         alt="We don't have a poster yet, but we'll fix that someday"
       />
     );
-
+    const release = new Date(releaseDate).toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
     const movieGenres = getMovieGenres.map((genre: Genre) => (
       <span key={genre.name} className="movie__genre">
         {' '}
@@ -68,9 +70,9 @@ export default class Movie extends Component<Props> {
           <div className="movie__overall-rating" style={this.voteAverageColor(voteAverage)}>
             {voteAverage}
           </div>
-          <p className="movie__release-date">{releaseDate}</p>
+          <p className="movie__release-date">{release !== 'Invalid Date' ? release : 'no release date'}</p>
           <div className="movie__genres"> {movieGenres} </div>
-          <p className="movie__description">{description}</p>
+          <p className="movie__description">{this.descriptionSlice(description)}</p>
           <Rate className="rateStar" defaultValue={personRate} count={10} onChange={this.onPersonalRating} />
         </div>
       </div>

@@ -6,10 +6,12 @@ import { debounce } from 'lodash';
 import Movie from '../movie';
 import ListPagination from '../pagination';
 import './movies-list.css';
-import Service from '../../servises/servise';
-import ServiceLocalStorage from '../../servises/servises-local-storage';
 import { GenresConsumer } from '../moviedb-service-context/moviedb-service-context';
 import SearchMovie from '../movie-search';
+import ServiceMovieDB from '../../servises/servise-movie-db';
+import ServiceLocalStorageMovie from '../../servises/servises-local-storage-movie';
+import Genre from '../../Data-types/genre';
+import MovieData from '../../Data-types/movie-data';
 interface Props {
   onPersonRateCounter: () => void;
 }
@@ -26,9 +28,9 @@ export default class MovieList extends Component<Props> {
     numberSearchPages: 1,
   };
 
-  getResource = new Service();
+  getMovieData = new ServiceMovieDB();
 
-  ServiceLocalStorage = new ServiceLocalStorage();
+  ServiceLocalStorage = new ServiceLocalStorageMovie();
 
   componentDidUpdate(prevProps: {}, prevState: { page: number; searchValue: string }) {
     if (this.state.searchValue !== prevState.searchValue || this.state.page !== prevState.page) {
@@ -44,8 +46,9 @@ export default class MovieList extends Component<Props> {
 
   addPersonalRating = (rate: number, id: number): void => {
     const idx: number = this.state.movieList.findIndex((el: { id: number }) => el.id === id);
-    const selectedMovie: object = this.state.movieList[idx];
-    const selectedMovieArr: object[] = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
+    const selectedMovie: MovieData = this.state.movieList[idx];
+    const selectedMovieArr: any = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
+    if (selectedMovieArr.find((el: MovieData) => el.id === selectedMovie.id)) return;
     selectedMovieArr.push({ ...selectedMovie, personRate: rate });
     this.ServiceLocalStorage.setLocalStorageMovie('selectedMovies', selectedMovieArr);
     this.props.onPersonRateCounter();
@@ -57,9 +60,9 @@ export default class MovieList extends Component<Props> {
 
   searchValue = debounce(this.getSearchChange, 1000);
 
-  renderMovie = (elem: any): any => {
+  renderMovie = (elem: MovieData): any => {
     const localStorageMovie: any = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
-    const movieIndexLocalStorage = localStorageMovie.findIndex((item: any) => elem.id === item.id);
+    const movieIndexLocalStorage = localStorageMovie.findIndex((item: MovieData) => elem.id === item.id);
     const personRate = movieIndexLocalStorage > -1 ? localStorageMovie[movieIndexLocalStorage].personRate : 0;
     return (
       <GenresConsumer>
@@ -84,24 +87,22 @@ export default class MovieList extends Component<Props> {
     );
   };
 
-  getMovieGenres = ({ genre_ids: genreIds }: { genre_ids: Number[] }, genres: any): any => {
+  getMovieGenres = ({ genre_ids: genreIds }: { genre_ids: Number[] }, genres: any): Array<Genre> => {
     return genreIds.map((genreId) => {
-      const genresIndex = genres.findIndex((genre: any) => {
-        return genre.id === genreId;
+      const genresIndex = genres.findIndex(({ id }: { id: number }) => {
+        return id === genreId;
       });
       return genres[genresIndex];
     });
   };
 
   async renderMovieList(searchValue: string, pageNumber: number = 1) {
-    if (!searchValue) return;
+    if (!searchValue.trim()) return;
     try {
       this.setState(() => {
         return { loading: true };
       });
-      const resource = await this.getResource.getResource(
-        `https://api.themoviedb.org/3/search/movie?api_key=080dad43fa18154700bb9b55ea7e3066&language=en-US&query=${searchValue}&page=${pageNumber}&include_adult=false`
-      );
+      const resource = await this.getMovieData.getMovieData(searchValue, pageNumber);
       this.setState(() => {
         return {
           loading: false,
@@ -141,7 +142,11 @@ export default class MovieList extends Component<Props> {
     const pagination =
       this.state.movieList.length !== 0 && !this.state.loading && !this.state.error ? (
         <div className="movie-list__pagination">
-          <ListPagination getPageChange={this.getPageChange} numberSearchPages={this.state.numberSearchPages} />
+          <ListPagination
+            page={this.state.page}
+            getPageChange={this.getPageChange}
+            numberSearchPages={this.state.numberSearchPages}
+          />
         </div>
       ) : null;
 

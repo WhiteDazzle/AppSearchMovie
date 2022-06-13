@@ -4,38 +4,40 @@ import { Tabs } from 'antd';
 import './App.css';
 import MovieList from '../movies-list';
 import MovieListRated from '../movie-list-rated';
-import Service from '../../servises/servise';
+import ServiceMovieDB from '../../servises/servise-movie-db';
 import { GenresProvider } from '../moviedb-service-context/moviedb-service-context';
+import Genre from '../../Data-types/genre';
 const { TabPane } = Tabs;
 
-export default class App extends Component {
-  state = { ratedMovieCounter: 0, allGenres: [] };
+type State = {
+  ratedMovieCounter: number;
+  allGenres: Array<Genre>;
+};
 
-  Service = new Service();
+export default class App extends Component {
+  state: State = { ratedMovieCounter: 0, allGenres: [] };
+
+  Service = new ServiceMovieDB();
 
   componentDidMount() {
     this.gettingArrayGenres();
   }
 
   async gettingArrayGenres() {
-    const responseGenres = await this.Service.getGenres();
-    this.setState(() => {
-      return { allGenres: responseGenres.genres };
-    });
+    const responseGenres = await this.Service.getGenresData();
+    this.setState({ allGenres: responseGenres.genres });
   }
 
   onPersonRateCounter = () => {
-    this.setState(() => {
-      const ratedMovieCounter = this.state.ratedMovieCounter + 1;
-      return { ratedMovieCounter: ratedMovieCounter };
-    });
+    const ratedMovieCounter = this.state.ratedMovieCounter + 1;
+    this.setState({ ratedMovieCounter: ratedMovieCounter });
   };
 
   render = () => {
     return (
       <div className="app">
         <GenresProvider value={this.state.allGenres}>
-          <Tabs defaultActiveKey="1" centered>
+          <Tabs defaultActiveKey="Search" centered>
             <TabPane tab="Search" key="Search">
               <MovieList onPersonRateCounter={this.onPersonRateCounter} />
             </TabPane>

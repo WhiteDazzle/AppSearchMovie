@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 
 import './movie-list-rated.css';
-import ServiceLocalStorage from '../../servises/servises-local-storage';
+import ServiceLocalStorage from '../../servises/servises-local-storage-movie';
 import Movie from '../movie';
 import { GenresConsumer } from '../moviedb-service-context/moviedb-service-context';
-
+import Genre from '../../Data-types/genre';
+import MovieData from '../../Data-types/movie-data';
 interface Props {
   ratedMovieCounter: number;
 }
@@ -29,12 +30,12 @@ export default class MovieListRated extends Component<Props> {
     });
   };
 
-  renderMovie = (elem: any): any => {
+  renderMovie = (elem: MovieData): any => {
     const localStorageMovie = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
     const movieIndexLocalStorage = localStorageMovie.findIndex((item: any) => elem.id === item.id);
     return movieIndexLocalStorage > -1 ? (
       <GenresConsumer>
-        {(allGenres) => {
+        {(allGenres: {}) => {
           const genres = this.getMovieGenres(elem, allGenres);
           return (
             <Movie
@@ -55,7 +56,7 @@ export default class MovieListRated extends Component<Props> {
     ) : null;
   };
 
-  getMovieGenres = ({ genre_ids: genreIds }: { genre_ids: Number[] }, genres: any): any => {
+  getMovieGenres = ({ genre_ids: genreIds }: { genre_ids: Number[] }, genres: any): Genre[] => {
     return genreIds.map((genreId) => {
       const genresIndex = genres.findIndex((genre: any) => {
         return genre.id === genreId;
