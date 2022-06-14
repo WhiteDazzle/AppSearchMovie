@@ -39,15 +39,13 @@ export default class MovieList extends Component<Props> {
   }
 
   getPageChange = (page: number): void => {
-    this.setState(() => {
-      return { page: page };
-    });
+    this.setState({ page: page });
   };
 
   addPersonalRating = (rate: number, id: number): void => {
     const idx: number = this.state.movieList.findIndex((el: { id: number }) => el.id === id);
     const selectedMovie: MovieData = this.state.movieList[idx];
-    const selectedMovieArr: any = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
+    const selectedMovieArr: MovieData[] = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
     if (selectedMovieArr.find((el: MovieData) => el.id === selectedMovie.id)) return;
     selectedMovieArr.push({ ...selectedMovie, personRate: rate });
     this.ServiceLocalStorage.setLocalStorageMovie('selectedMovies', selectedMovieArr);
@@ -60,8 +58,8 @@ export default class MovieList extends Component<Props> {
 
   searchValue = debounce(this.getSearchChange, 1000);
 
-  renderMovie = (elem: MovieData): any => {
-    const localStorageMovie: any = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
+  renderMovie = (elem: MovieData): JSX.Element => {
+    const localStorageMovie: MovieData[] = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
     const movieIndexLocalStorage = localStorageMovie.findIndex((item: MovieData) => elem.id === item.id);
     const personRate = movieIndexLocalStorage > -1 ? localStorageMovie[movieIndexLocalStorage].personRate : 0;
     return (
@@ -87,7 +85,7 @@ export default class MovieList extends Component<Props> {
     );
   };
 
-  getMovieGenres = ({ genre_ids: genreIds }: { genre_ids: Number[] }, genres: any): Array<Genre> => {
+  getMovieGenres = ({ genre_ids: genreIds }: { genre_ids: Number[] }, genres: Genre[]): Array<Genre> => {
     return genreIds.map((genreId) => {
       const genresIndex = genres.findIndex(({ id }: { id: number }) => {
         return id === genreId;
@@ -99,18 +97,14 @@ export default class MovieList extends Component<Props> {
   async renderMovieList(searchValue: string, pageNumber: number = 1) {
     if (!searchValue.trim()) return;
     try {
-      this.setState(() => {
-        return { loading: true };
-      });
+      this.setState({ loading: true });
       const resource = await this.getMovieData.getMovieData(searchValue, pageNumber);
-      this.setState(() => {
-        return {
-          loading: false,
-          firstLoading: false,
-          error: false,
-          movieList: resource.results,
-          numberSearchPages: resource.total_pages,
-        };
+      this.setState({
+        loading: false,
+        firstLoading: false,
+        error: false,
+        movieList: resource.results,
+        numberSearchPages: resource.total_pages,
       });
     } catch (e: any) {
       const errorMessage =

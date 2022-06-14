@@ -25,17 +25,15 @@ export default class MovieListRated extends Component<Props> {
 
   initiateMovie = (): void => {
     const movieListRated = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
-    this.setState(() => {
-      return { personRated: movieListRated };
-    });
+    this.setState({ personRated: movieListRated });
   };
 
-  renderMovie = (elem: MovieData): any => {
+  renderMovie = (elem: MovieData): JSX.Element | null => {
     const localStorageMovie = this.ServiceLocalStorage.getLocalStorageMovie('selectedMovies');
-    const movieIndexLocalStorage = localStorageMovie.findIndex((item: any) => elem.id === item.id);
+    const movieIndexLocalStorage = localStorageMovie.findIndex((item) => elem.id === item.id);
     return movieIndexLocalStorage > -1 ? (
       <GenresConsumer>
-        {(allGenres: {}) => {
+        {(allGenres: Array<Genre>) => {
           const genres = this.getMovieGenres(elem, allGenres);
           return (
             <Movie
@@ -56,9 +54,9 @@ export default class MovieListRated extends Component<Props> {
     ) : null;
   };
 
-  getMovieGenres = ({ genre_ids: genreIds }: { genre_ids: Number[] }, genres: any): Genre[] => {
+  getMovieGenres = ({ genre_ids: genreIds }: { genre_ids: Number[] }, genres: Genre[]): Genre[] => {
     return genreIds.map((genreId) => {
-      const genresIndex = genres.findIndex((genre: any) => {
+      const genresIndex = genres.findIndex((genre: Genre) => {
         return genre.id === genreId;
       });
       return genres[genresIndex];
