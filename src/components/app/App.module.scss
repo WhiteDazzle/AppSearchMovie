@@ -1,0 +1,18 @@
+.app-wrapper {
+    background-color: #F7F7F7;
+    min-height: 900px;
+}
+.app {
+    margin-right: auto;
+    margin-left: auto;
+    width: 1010px;
+    padding-left: 36px;
+    padding-right: 36px;
+    background-color: white;
+    @media (max-width: 1010px) {
+        min-width: 425px;
+        width: 100%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+}

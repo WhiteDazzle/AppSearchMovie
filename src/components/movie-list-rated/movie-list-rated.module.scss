@@ -1,0 +1,19 @@
+.movie-list-rated {
+  padding-top: 60px;
+  padding-bottom: 20px;
+  min-height: 604px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  height: 100%;
+  position: relative;
+  @media (max-width: 940px) {
+    justify-content: center;
+  }
+}
+  .spin,
+  .title,
+  .error-alert {
+    margin: 250px auto 250px auto;
+  }
