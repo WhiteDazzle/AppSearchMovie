@@ -9,8 +9,8 @@ const movieUtils = {
   },
 
   titleClassName: (title: string): string => {
-    if (title.length >= 38) return styles.title + styles['title--3-string'];
-    if (title.length >= 24) return styles.title + styles['title--2-string'];
+    if (title.length >= 38) return styles.title + ' ' + styles['title--3-string'];
+    if (title.length >= 24) return styles.title + ' ' + styles['title--2-string'];
     return 'movie__title';
   },
 
