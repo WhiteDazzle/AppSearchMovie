@@ -24,6 +24,7 @@ export default class App extends Component {
   componentDidMount() {
     this.getArrayGenres();
     this.createNewGuestSession();
+    localStorage.removeItem('selectedMovies');
   }
 
   componentWillUnmount() {
